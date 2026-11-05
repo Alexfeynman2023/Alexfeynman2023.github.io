@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation – CiteLens MCP</title>
+  <meta name="description" content="Setup guide and tool reference for CiteLens MCP, the open-source MCP server for Bing Webmaster Tools and AI citation analysis.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/" class="logo">CiteLens MCP</a>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/docs/">Docs</a>
+        <a href="https://github.com/Alexfeynman2023/citelens-mcp">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>Documentation</h1>
+
+    <section id="setup">
+      <h2>Setup</h2>
+
+      <h3>1. Get Your API Key</h3>
+      <ol>
+        <li>Go to <a href="https://www.bing.com/webmasters">Bing Webmaster Tools</a></li>
+        <li>Sign in and verify your site</li>
+        <li>Navigate to <strong>Settings → API Access</strong></li>
+        <li>Generate your API key</li>
+      </ol>
+
+      <h3>2. Configure Your MCP Client</h3>
+
+      <h4>Claude Desktop</h4>
+      <p>Add to your <code>claude_desktop_config.json</code> (typically at <code>~/Library/Application Support/Claude/</code> on macOS or <code>%APPDATA%\Claude\</code> on Windows):</p>
+      <pre><code>{
+  "mcpServers": {
+    "citelens": {
+      "command": "npx",
+      "args": ["-y", "citelens-mcp"],
+      "env": {
+        "BING_WEBMASTER_API_KEY": "your-api-key-here",
+        "INDEXNOW_KEY": "your-indexnow-key"
+      }
+    }
+  }
+}</code></pre>
+
+      <h4>Cursor</h4>
+      <p>Add to your Cursor MCP settings:</p>
+      <pre><code>{
+  "mcpServers": {
+    "citelens": {
+      "command": "npx",
+      "args": ["-y", "citelens-mcp"],
+      "env": {
+        "BING_WEBMASTER_API_KEY": "your-api-key-here",
+        "INDEXNOW_KEY": "your-indexnow-key"
+      }
+    }
+  }
+}</code></pre>
+
+      <h3>3. Environment Variables</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Required</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>BING_WEBMASTER_API_KEY</code></td>
+            <td>Yes (for Bing tools)</td>
+            <td>Your Bing Webmaster API key</td>
+          </tr>
+          <tr>
+            <td><code>INDEXNOW_KEY</code></td>
+            <td>No</td>
+            <td>Your IndexNow key (can also pass per-request)</td>
+          </tr>
+          <tr>
+            <td><code>CITELENS_DATA_DIR</code></td>
+            <td>No</td>
+            <td>Data directory (default: <code>~/.citelens</code>)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="tools">
+      <h2>Tool Reference</h2>
+
+      <h3>Bing Webmaster Tools (12 tools)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>bing_list_sites</code></td><td>List all verified sites</td></tr>
+          <tr><td><code>bing_get_traffic</code></td><td>Get traffic and ranking stats</td></tr>
+          <tr><td><code>bing_get_query_stats</code></td><td>Get search query (keyword) statistics</td></tr>
+          <tr><td><code>bing_get_page_stats</code></td><td>Get page-level statistics</td></tr>
+          <tr><td><code>bing_get_crawl_stats</code></td><td>Get crawl statistics over time</td></tr>
+          <tr><td><code>bing_get_crawl_issues</code></td><td>Get crawl errors and issues</td></tr>
+          <tr><td><code>bing_get_url_info</code></td><td>Get index status for a specific URL</td></tr>
+          <tr><td><code>bing_list_sitemaps</code></td><td>List submitted sitemaps</td></tr>
+          <tr><td><code>bing_submit_sitemap</code></td><td>Submit a new sitemap</td></tr>
+          <tr><td><code>bing_get_url_submission_quota</code></td><td>Check remaining URL submission quota</td></tr>
+          <tr><td><code>bing_submit_url</code></td><td>Submit a single URL for indexing</td></tr>
+          <tr><td><code>bing_submit_url_batch</code></td><td>Submit multiple URLs (max 500 per batch)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>IndexNow (4 tools)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>indexnow_generate_key</code></td><td>Generate a new IndexNow key (8–128 characters)</td></tr>
+          <tr><td><code>indexnow_validate_key</code></td><td>Check if your key file is accessible at the expected URL</td></tr>
+          <tr><td><code>indexnow_submit_url</code></td><td>Submit a single URL via IndexNow</td></tr>
+          <tr><td><code>indexnow_submit_batch</code></td><td>Submit up to 10,000 URLs at once</td></tr>
+        </tbody>
+      </table>
+
+      <h3>AI Citation Analysis (8 tools)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>ai_import_citation_report</code></td><td>Import CSV/XLSX export from Bing AI Performance</td></tr>
+          <tr><td><code>ai_get_top_cited_pages</code></td><td>Get pages with most AI citations</td></tr>
+          <tr><td><code>ai_get_citation_trend</code></td><td>View citation trend over time</td></tr>
+          <tr><td><code>ai_get_top_queries</code></td><td>Get top grounding queries</td></tr>
+          <tr><td><code>ai_get_top_intents</code></td><td>Get top intents from queries</td></tr>
+          <tr><td><code>ai_get_top_topics</code></td><td>Get top topics from queries</td></tr>
+          <tr><td><code>ai_compare_with_bing_stats</code></td><td>Compare AI citations with Bing search stats</td></tr>
+          <tr><td><code>ai_get_import_history</code></td><td>View history of imported reports</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Historical Snapshots (3 tools)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>snapshot_stats</code></td><td>Save current stats for historical comparison</td></tr>
+          <tr><td><code>list_snapshots</code></td><td>List all saved snapshots</td></tr>
+          <tr><td><code>diff_stats</code></td><td>Compare two snapshots to see changes</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="citation-reports">
+      <h2>AI Citation Report Format</h2>
+      <p>CiteLens accepts CSV/XLSX exports from the Bing Webmaster Tools AI Performance section. The parser automatically detects these report types:</p>
+      <ul>
+        <li><strong>AIPageStatsReport</strong> – Page URLs and citation counts</li>
+        <li><strong>AIPerformanceOverviewStats</strong> – Daily citation trends</li>
+        <li><strong>AISearchQueriesReport</strong> – Grounding queries, intents, topics, and citation share</li>
+      </ul>
+      <p>The parser handles:</p>
+      <ul>
+        <li>Multiple languages (English, German, Spanish, Italian, Chinese, Japanese)</li>
+        <li>Case and spacing variations in column names</li>
+        <li>Numbers with commas and percentage formats</li>
+        <li>Missing optional columns (Intent, Topic, Citation Share)</li>
+        <li>UTF-8 BOM markers</li>
+        <li>Auto-detection of delimiter (comma, semicolon, tab)</li>
+      </ul>
+    </section>
+
+    <section id="examples">
+      <h2>Example Prompts</h2>
+      <p>Once configured, try asking your AI assistant:</p>
+      <ul>
+        <li><em>"Show me my top 10 pages by Bing impressions"</em></li>
+        <li><em>"Which of my pages are being cited by AI? Import the AI report from ~/Downloads/mysite_AIPageStatsReport.csv"</em></li>
+        <li><em>"Submit these new blog posts to IndexNow: [urls]"</em></li>
+        <li><em>"Compare my keyword rankings from last week to this week"</em></li>
+        <li><em>"What crawl issues does Bing see on my site?"</em></li>
+        <li><em>"How has my AI citation count trended over the past month?"</em></li>
+      </ul>
+    </section>
+
+    <section id="architecture">
+      <h2>Architecture</h2>
+      <pre><code>┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│  Claude/Cursor  │────▶│   CiteLens MCP   │────▶│  Bing Webmaster │
+│    ChatGPT      │     │    (stdio)       │     │  Tools API      │
+└─────────────────┘     └────────┬─────────┘     └─────────────────┘
+                                 │
+                                 ▼
+                        ┌────────────────┐
+                        │  Local SQLite  │
+                        │  (snapshots &  │
+                        │   citations)   │
+                        └────────────────┘</code></pre>
+      <p>Data is stored locally in SQLite at <code>~/.citelens/</code> (or the path set in <code>CITELENS_DATA_DIR</code>). No data is sent anywhere except the Bing Webmaster Tools API and IndexNow endpoints.</p>
+    </section>
+
+    <div class="disclaimer">
+      <strong>Trademark Notice:</strong> CiteLens is not affiliated with, endorsed by, or sponsored by Microsoft Corporation. "Bing" and "Microsoft Copilot" are trademarks of Microsoft Corporation. This tool works with Bing Webmaster Tools via its official API.
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="https://github.com/Alexfeynman2023/citelens-mcp">GitHub</a> · <a href="/docs/">Docs</a> · MIT License</p>
+  </footer>
+</body>
+</html>

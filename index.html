@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CiteLens MCP – See How AI Is Citing Your Website</title>
+  <meta name="description" content="Open-source MCP server that gives AI assistants access to Bing Webmaster Tools data, IndexNow URL submission, and AI citation analysis.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/" class="logo">CiteLens MCP</a>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/docs/">Docs</a>
+        <a href="https://github.com/Alexfeynman2023/citelens-mcp">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>See How AI Is Citing Your Website</h1>
+      <p class="tagline">An open-source MCP server that gives Claude, Cursor, and ChatGPT access to your Bing Webmaster Tools data, IndexNow submission, and AI citation analysis.</p>
+      <div class="cta-buttons">
+        <a href="/docs/" class="btn btn-primary">Get Started</a>
+        <a href="https://github.com/Alexfeynman2023/citelens-mcp" class="btn btn-secondary">View on GitHub</a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Why CiteLens?</h2>
+      <p>As AI-powered search becomes mainstream, understanding how your content is being cited by AI is crucial for SEO. CiteLens bridges the gap by connecting your AI assistant directly to your site data.</p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>Webmaster Tools Access</h3>
+          <p>Query traffic stats, keyword rankings, crawl issues, and page performance directly from your AI assistant.</p>
+        </div>
+        <div class="feature-card">
+          <h3>IndexNow Submission</h3>
+          <p>Submit URLs for instant indexing across search engines. Submit up to 10,000 URLs in a single batch.</p>
+        </div>
+        <div class="feature-card">
+          <h3>AI Citation Analysis</h3>
+          <p>Import CSV/XLSX exports from AI Performance reports to see which pages AI is citing and trending queries.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Historical Snapshots</h3>
+          <p>Save weekly stats locally (since API data updates weekly with no date parameters) and diff changes over time.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Quick Start</h2>
+      <div class="quickstart">
+        <h3>Run with npx</h3>
+        <p>No installation required. Just add to your MCP client config:</p>
+        <pre><code>{
+  "mcpServers": {
+    "citelens": {
+      "command": "npx",
+      "args": ["-y", "citelens-mcp"],
+      "env": {
+        "BING_WEBMASTER_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}</code></pre>
+        <p>See the <a href="/docs/">documentation</a> for full setup instructions.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Who Is This For?</h2>
+      <ul>
+        <li><strong>SEO professionals</strong> who want to query site data conversationally</li>
+        <li><strong>Content teams</strong> tracking how AI surfaces their pages</li>
+        <li><strong>Developers</strong> who prefer CLI/AI workflows over dashboards</li>
+        <li><strong>Site owners</strong> who want instant URL indexing via IndexNow</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>27 Tools Available</h2>
+      <p>CiteLens provides 27 tools across four categories:</p>
+      <ul>
+        <li><strong>12 Webmaster Tools</strong> – site list, traffic, keywords, pages, crawl stats, sitemaps, URL submission</li>
+        <li><strong>4 IndexNow Tools</strong> – generate key, validate, submit URL, batch submit</li>
+        <li><strong>8 AI Citation Tools</strong> – import reports, top pages, trends, queries, intents, topics</li>
+        <li><strong>3 Snapshot Tools</strong> – save, list, and diff historical data</li>
+      </ul>
+      <p><a href="/docs/#tools">See the full tool reference →</a></p>
+    </section>
+
+    <div class="notice">
+      <strong>Hosted version coming soon.</strong> Want OAuth login instead of API keys? <a href="https://github.com/Alexfeynman2023/citelens-mcp/issues">Tell us on GitHub</a> and we'll prioritize it.
+    </div>
+
+    <div class="disclaimer">
+      <strong>Trademark Notice:</strong> CiteLens is not affiliated with, endorsed by, or sponsored by Microsoft Corporation. "Bing" and "Microsoft Copilot" are trademarks of Microsoft Corporation. This tool works with Bing Webmaster Tools via its official API.
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="https://github.com/Alexfeynman2023/citelens-mcp">GitHub</a> · <a href="/docs/">Docs</a> · MIT License</p>
+  </footer>
+</body>
+</html>
