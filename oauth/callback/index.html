@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OAuth Callback – CiteLens MCP</title>
+  <style>
+    :root {
+      --color-primary: #2563eb;
+      --color-bg: #ffffff;
+      --color-text: #1e293b;
+      --color-text-secondary: #64748b;
+      --color-border: #e2e8f0;
+      --color-code-bg: #f1f5f9;
+      --color-success: #16a34a;
+      --color-error: #dc2626;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      background: var(--color-bg);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin: 0 0 1rem;
+    }
+    .status {
+      padding: 1rem 1.25rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .status.success {
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      color: var(--color-success);
+    }
+    .status.error {
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      color: var(--color-error);
+    }
+    .status.waiting {
+      background: var(--color-code-bg);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-secondary);
+    }
+    .param-list {
+      background: var(--color-code-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 0.5rem;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .param-item {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      align-items: flex-start;
+    }
+    .param-item:last-child {
+      margin-bottom: 0;
+    }
+    .param-name {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      min-width: 100px;
+      flex-shrink: 0;
+    }
+    .param-value {
+      font-family: var(--font-mono);
+      word-break: break-all;
+      background: #fff;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      border: 1px solid var(--color-border);
+      flex: 1;
+      user-select: all;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+    }
+    a {
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>OAuth Callback</h1>
+    <div id="status" class="status waiting">Parsing URL parameters...</div>
+    <div id="params"></div>
+    <p class="note">This page displays OAuth callback parameters for development/testing. No data is sent anywhere. Copy the values you need and close this tab.</p>
+    <p><a href="/">← Back to CiteLens MCP</a></p>
+  </div>
+
+  <script>
+    (function() {
+      const statusEl = document.getElementById('status');
+      const paramsEl = document.getElementById('params');
+      const params = new URLSearchParams(window.location.search);
+      
+      const code = params.get('code');
+      const state = params.get('state');
+      const error = params.get('error');
+      const errorDescription = params.get('error_description');
+
+      if (error) {
+        statusEl.className = 'status error';
+        statusEl.textContent = 'OAuth Error: ' + error;
+        
+        const items = [
+          { name: 'error', value: error },
+        ];
+        if (errorDescription) {
+          items.push({ name: 'error_description', value: errorDescription });
+        }
+        if (state) {
+          items.push({ name: 'state', value: state });
+        }
+        renderParams(items);
+      } else if (code) {
+        statusEl.className = 'status success';
+        statusEl.textContent = 'Authorization code received';
+        
+        const items = [
+          { name: 'code', value: code },
+        ];
+        if (state) {
+          items.push({ name: 'state', value: state });
+        }
+        renderParams(items);
+      } else {
+        statusEl.className = 'status waiting';
+        statusEl.textContent = 'No OAuth parameters found in URL';
+        
+        if (params.toString()) {
+          const items = [];
+          for (const [key, value] of params) {
+            items.push({ name: key, value: value });
+          }
+          if (items.length > 0) {
+            renderParams(items);
+          }
+        }
+      }
+
+      function renderParams(items) {
+        const container = document.createElement('div');
+        container.className = 'param-list';
+        
+        items.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'param-item';
+          div.innerHTML = '<span class="param-name">' + escapeHtml(item.name) + ':</span>' +
+                          '<span class="param-value">' + escapeHtml(item.value) + '</span>';
+          container.appendChild(div);
+        });
+        
+        paramsEl.appendChild(container);
+      }
+
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+    })();
+  </script>
+</body>
+</html>
